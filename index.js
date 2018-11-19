@@ -46,25 +46,6 @@ const TopOldSongsHandler = {
 };
 
 /***
- * Singers of 60's Handler
- * @type {{canHandle(*): *, handle(*): *}}
- */
-/*const OldSingersHandler = {
-    canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
-            handlerInput.requestEnvelope.request.intent.name === 'Singers';
-    },
-    handle(handlerInput) {
-        const speechText = 'Top Singers of the Golden Era of 60`s were: Lata Mangeshkar, Asha Bhosle, Kishore Kumar, Mohammad Rafi, Mukesh, Manna Dey & Hemanta Mukherjee';
-        const repromptText = 'Top Singers of the Golden Era of 60`s were: Lata Mangeshkar, Asha Bhosle, Kishore Kumar, Mohammad Rafi, Mukesh, Manna Dey & Hemanta Mukherjee';
-        return handlerInput.responseBuilder
-            .speak(speechText)
-            .reprompt(repromptText)
-            .getResponse();
-    }
-};*/
-
-/***
  * RealityShows Handler
  * @type {{canHandle(*): *, handle(*): *}}
  */
@@ -80,6 +61,7 @@ const RealityShowHandler = {
             .speak(speechText)
             .reprompt(repromptText)
             .withSimpleCard(title, speechText + repromptText)
+            .withShouldEndSession(true)
             .getResponse();
     }
 };
@@ -124,6 +106,7 @@ const IndianIdolWinner2Handler = {
             .speak(speechText)
             .reprompt(repromptText)
             .withSimpleCard(title, speechText + repromptText)
+            .withShouldEndSession(false)
             .getResponse();
     }
 };
@@ -143,6 +126,7 @@ const SGHitsHandler = {
         return handlerInput.responseBuilder
             .speak(speechText)
             .reprompt(repromptText)
+            .withShouldEndSession(true)
             .getResponse();
     }
 };
@@ -164,6 +148,21 @@ const LataJiBestHandler = {
         return handlerInput.responseBuilder
             .speak(speechText)
             .reprompt(repromptText)
+            .withShouldEndSession(true)
+            .getResponse();
+    }
+};
+
+/**Help Intent Handler**/
+const HelpIntentHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
+            handlerInput.requestEnvelope.request.intent.name === 'AMAZON.HelpIntent'
+    },
+    handle(handlerInput) {
+        return handlerInput.responseBuilder.speak('You can ask Music Diva questions like what are the top songs of 90`s, ' +
+            'Best of Lata Mangeshkar, Hits of Shreya Ghoshal, Reality Shows on Music, Winners of Indian Idol')
+            .withShouldEndSession(false)
             .getResponse();
     }
 };
@@ -212,6 +211,7 @@ exports.handler = Alexa.SkillBuilders.custom()
         IndianIdolWinnerHandler,
         IndianIdolWinner2Handler,
         SGHitsHandler,
+        HelpIntentHandler,
         SessionEndedRequestHandler,
     )
     .addResponseInterceptors()
